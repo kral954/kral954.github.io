@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Türkiye İllerini Bul</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    svg {
+      width: 600px;
+      height: auto;
+      border: 2px solid #333;
+      margin-bottom: 20px;
+    }
+
+    .il {
+      fill: #ccc;
+      stroke: #000;
+      stroke-width: 1;
+      cursor: pointer;
+      transition: fill 0.2s;
+    }
+
+    .il:hover {
+      fill: #aaa;
+    }
+
+    .dogru {
+      fill: green !important;
+    }
+
+    #hedef {
+      font-size: 24px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hangi ili bulabilirsin?</h1>
+  <svg viewBox="0 0 100 100">
+    <!-- Basit temsili 3 il – gerçek harita değil, örnek için -->
+    <path id="istanbul" class="il" d="M10,10 L40,10 L40,40 L10,40 Z" />
+    <path id="ankara" class="il" d="M50,10 L80,10 L80,40 L50,40 Z" />
+    <path id="izmir" class="il" d="M10,50 L40,50 L40,80 L10,80 Z" />
+  </svg>
+
+  <div id="hedef">Bul: İstanbul</div>
+
+  <script>
+    const iller = ['istanbul', 'ankara', 'izmir'];
+    const ilIsimleri = {
+      istanbul: 'İstanbul',
+      ankara: 'Ankara',
+      izmir: 'İzmir'
+    };
+
+    let sorulanIndex = 0;
+    const hedefDiv = document.getElementById('hedef');
+
+    function hedefGoster() {
+      if (sorulanIndex >= iller.length) {
+        hedefDiv.innerText = "Tebrikler! Tüm illeri buldun 🎉";
+        return;
+      }
+      hedefDiv.innerText = "Bul: " + ilIsimleri[iller[sorulanIndex]];
+    }
+
+    hedefGoster();
+
+    document.querySelectorAll('.il').forEach(il => {
+      il.addEventListener('click', () => {
+        if (il.classList.contains('dogru')) return; // Zaten doğruysa geç
+        if (il.id === iller[sorulanIndex]) {
+          il.classList.add('dogru');
+          sorulanIndex++;
+          hedefGoster();
+        } else {
+          alert("Burası değil! Tekrar dene.");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
